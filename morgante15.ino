@@ -82,6 +82,7 @@ if(stato==RICEVIMENTO)
   
 
 if(stato==ESECUZIONE){
+
 stato=FINE;
 }
 if(stato==FINE){
@@ -95,5 +96,4 @@ void invia()
   Serial.print(certo.length());
   Serial.print(certo);
 }
-
 
