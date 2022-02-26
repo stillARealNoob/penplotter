@@ -8,7 +8,7 @@ enum enumtipo
   ESECUZIONE,
   FINE,
 };
-void calibraMotore();
+
 
 
 int butAngoloX=12;  //pulsante angolo X
@@ -116,7 +116,6 @@ void loop()
 }
 void spostaOrigine()
 {
-
   bool arrivati=false;
   stepper1.setSpeed(speed);           
   stepper2.setSpeed(-speed); 
@@ -131,6 +130,7 @@ void spostaOrigine()
   }
   delay(100); 
 }
+
 void calibraMotore()
 {
   stepper1.setSpeed(speed);           
@@ -153,7 +153,6 @@ void calibraMotore()
 
   arrivati=false;
 
-
   stepper1.setSpeed(-speed);      //dai u lna velocita al motore
   stepper2.setSpeed(speed);        
   while(!arrivati)  //finche il pulsante per la lunghezza non è premuto
@@ -172,80 +171,28 @@ void calibraMotore()
   millimetriYMax=stepYMax/2048;                                  
   //Serial.println(ROTAZ_XMAX);
   //Serial.println(ROTAZ_YMAX);
-
-
-  //fine calibrazione
-
-  
-}void calibraMotore()
-{
-  stepper1.setSpeed(speed);           
-  stepper2.setSpeed(-speed); 
-  
-  bool arrivati=false;
-
-
-  while(!arrivati)  //finche il pulsante per gli angolo non è premuto
-  {
-    if(digitalRead(butAngoloX)==LOW) 
-      stepper1.runSpeed();      //vai avanti
-    if(digitalRead(butAngoloY)==LOW)
-      stepper2.runSpeed();      //vai avanti
-    arrivati=digitalRead(butAngoloY)==HIGH &&  digitalRead(butAngoloX)==HIGH;//quando entrami i pulsante sono premuti, cambia valore ad arrivati per uscire dal ciclo                
-  }
-  delay(100);     
-  stepper1.setCurrentPosition(0);       //imposta la posizione attuale del motore come cordinata 0
-  stepper2.setCurrentPosition(0);
-
-  arrivati=false;
-
-
-  stepper1.setSpeed(-speed);      //dai u lna velocita al motore
-  stepper2.setSpeed(speed);        
-  while(!arrivati)  //finche il pulsante per la lunghezza non è premuto
-  {
-    if(digitalRead(butEndX)==LOW)
-      stepper1.runSpeed();      //vai avanti nel verso opposto del movimento di prima
-    if(digitalRead(butEndY)==LOW)
-      stepper2.runSpeed();      //vai avanti nel verso opposto del movimento di prima
-    arrivati=digitalRead(butEndY)==HIGH &&  digitalRead(butEndX)==HIGH;//quando entrami i pulsante sono premuti, cambia valore ad arrivati per uscire dal ciclo        
-  }
-  delay(100);
-
-  stepXMax=stepper1.currentPosition();  //salva quanti passi ha percorso il motore "e quindi anche quanto è lungo il lato"
-  stepYMax=stepper2.currentPosition(); 
-  millimetriXMax=stepXMax/2048 ;
-  millimetriYMax=stepYMax/2048;                                  
-  //Serial.println(ROTAZ_XMAX);
-  //Serial.println(ROTAZ_YMAX);
-
-
-  //fine calibrazione
-
-  
+  //fine calibrazione  
 }
 void disegna()
 {
-  stato=false;
+  
   stepper1.setSpeed(speed);
   stepper2.setSpeed(-speed);
-  while(!stato)
+  while(1)
   {
     if(stepper1.currentPosition()==DESTX && stepper2.currentPosition()==DESTY)
     {
-      return 0;
+      return;
     }
     if(stepper1.currentPosition()>DESTX)
     { 
       stepper1.runSpeed();
     }
-    else if(stepper1.currentPosition()<DESTXdestX)
+    else if(stepper1.currentPosition()<DESTX)
     {
       stepper1.setSpeed(-speed);
       stepper1.runSpeed();
     }
-    
-    
     if(stepper2.currentPosition()>DESTY)
     {
       stepper2.runSpeed();
@@ -256,6 +203,7 @@ void disegna()
       stepper1.runSpeed();
     }
   }
+  delay(100);
 }
 void invia()
 {
